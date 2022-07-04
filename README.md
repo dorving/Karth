@@ -4,7 +4,7 @@ Karth is a wrapper around [GEarth](https://github.com/sirjonasxx/G-Earth) with a
 ### Type-safe
 
 Karth provides a type-safe way to listen for and send messages.
-Messages are distinct by `Message.Outgoing` and `Message.Incoming` types messages.
+There are `Message.Outgoing` (to server) and `Message.Incoming` (to client) typed messages.
 These are [sealed classes](https://kotlinlang.org/docs/sealed-classes.html) 
 and define the specific `Message`implementations.
 
