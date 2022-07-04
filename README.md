@@ -94,7 +94,10 @@ session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
 
 ### Live Entities
 
-This is something very experimental. These would be entities that listen to specific messages to maintain their current state in the client and make it observable. 
+These are entities with observable states whose state reflect the current state in the client. 
+Live Entities maintain their state by listening to relevant incoming messages.
+
+Create a [LiveRoom](src/main/kotlin/dorving/karth/entity/LiveRoom.kt) instance.
 ```kt
 val liveRoom = LiveRoom(session)
 ```
