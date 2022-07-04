@@ -91,3 +91,21 @@ session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
     onException = { it.printStackTrace() }
 )
 ```
+
+### Live Entities
+
+This is something very experimental. These would be entities that listen to specific messages to maintain their current state in the client and make it observable. 
+```kt
+val liveRoom = LiveRoom(session)
+```
+
+For example, a [LiveRoom](src/main/kotlin/dorving/karth/entity/LiveRoom.kt) entitiy listens to all Room related packets in order to maintain its state. It uses these packets for one to maintaina a list of all the items in the room. 
+```kt
+val fxFloorItemNodes = FXCollections.observableArrayList<Label>() // e.g. used as backing list for some ListView
+liveRoom.floorItemList.addListener(ListChangeListener {
+    Platform.runLater {
+        fxFloorItemNodes.setAll(it.list.map { floorItem -> Label("FloorItem(id=${floorItem.id})") })
+    }
+})
+```
+
