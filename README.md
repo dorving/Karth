@@ -64,10 +64,30 @@ session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
     onReceive = { println("Received a message from $userIndex containing $contents") }
 )
 
+// Specify max duration of an attempt at receiving the expected packet
+session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
+    toSend = heyChat,        
+    maxWaitTime = 1000.milliseconds,
+    condition = { userIndex == 69 }, // accept first message for user with index `69`
+    onReceive = { println("Received a message from $userIndex containing $contents") },
+)
+
+// Specify how many times the method should retry in case of a timeout/read failure.
+session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
+    toSend = heyChat,
+    maxWaitTime = 1000.milliseconds,
+    maxAttempts = 10, // if failed 10 times in a row, stop blocking
+    condition = { userIndex == 69 }, // accept first message for user with index `69`
+    onReceive = { println("Received a message from $userIndex containing $contents") },
+)
+
 // Handle exceptions
 session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
     toSend = heyChat,
-    onException = { it.printStackTrace() },
+    maxWaitTime = 1000.milliseconds,
+    maxAttempts = 10, // if failed 10 times in a row, stop blocking
+    condition = { userIndex == 69 }, // accept first message for user with index `69`
     onReceive = { println("Received a message from $userIndex containing $contents") },
+    onException = { it.printStackTrace() }
 )
 ```
