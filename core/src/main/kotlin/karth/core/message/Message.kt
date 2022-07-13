@@ -217,7 +217,7 @@ sealed class Message {
             Outgoing()
 
         @kotlinx.serialization.Serializable
-        data class BuyOffer(val offerId: Int, val arg2: Int? = null, val arg3: String? = null) : Outgoing()
+        data class BuyOffer(val offerId: Int, val offerPrice: Int? = null, val arg3: String? = null) : Outgoing()
 
         @kotlinx.serialization.Serializable
         data class CancelOffer(val offerId: Int) : Outgoing()

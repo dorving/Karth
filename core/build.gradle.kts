@@ -8,4 +8,5 @@ dependencies {
     api(files("libs/G-Earth.jar"))
     implementation(libsAlias.kotlinCoroutinesCore)
     implementation(libsAlias.kotlinSerialisationJson)
+    implementation(libsAlias.kotlinReflect)
 }

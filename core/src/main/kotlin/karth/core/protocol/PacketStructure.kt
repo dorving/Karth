@@ -29,6 +29,7 @@ private annotation class BuilderDslMarker
 const val HEADER_ID_UNDEFINED = -1
 
 private val logger = InlineLogger("PacketBuilder")
+
 @BuilderDslMarker
 class PacketBuilder<T : Packet>(private val name: String) {
 

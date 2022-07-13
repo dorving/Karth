@@ -1,17 +1,18 @@
 package karth.protocol.habbo
 
-import gearth.extensions.parsers.HProductType
 import gearth.extensions.parsers.HStuff
 import gearth.protocol.connection.HClient
 import karth.core.api.Gender
 import karth.core.api.Look
+import karth.core.api.Offers
+import karth.core.api.ProductType
 import karth.core.message.Message.Incoming
 import karth.core.message.Message.Outgoing
-import karth.core.api.Offers
 import karth.util.appendStringUTF8
 import karth.util.readStringUTF8
 import kotlin.math.absoluteValue
 
+@Suppress("RemoveExplicitTypeArguments")
 fun registerFlash(codec: HabboCodec) {
     codec.outgoing(clientType = HClient.FLASH).apply {
         register<Outgoing.Chat> {
@@ -62,12 +63,8 @@ fun registerFlash(codec: HabboCodec) {
                 Outgoing.GetGuestRoom(roomId = readInteger(), arg2 = readInteger(), arg3 = readInteger())
             }
         }
-        register<Outgoing.GetCreditsInfo>() {
-            read { Outgoing.GetCreditsInfo }
-        }
-        register<Outgoing.GetOwnOffers>(name = "GetMarketplaceOwnOffers") {
-            read { Outgoing.GetOwnOffers }
-        }
+        register<Outgoing.GetCreditsInfo>()
+        register<Outgoing.GetOwnOffers>(name = "GetMarketplaceOwnOffers")
         register<Outgoing.GetOffers>(name = "GetMarketplaceOffers") {
             write {
                 it.appendInt(minPrice)
@@ -121,9 +118,7 @@ fun registerFlash(codec: HabboCodec) {
                 Outgoing.UseFurniture(furniId = readInteger(), arg2 = readInteger())
             }
         }
-        register<Outgoing.RequestFurniInventory>() {
-            read { Outgoing.RequestFurniInventory }
-        }
+        register<Outgoing.RequestFurniInventory>()
         register<Outgoing.NavigatorSearch>(name = "NewNavigatorSearch") {
             write {
                 it.appendStringUTF8(category)
@@ -131,12 +126,8 @@ fun registerFlash(codec: HabboCodec) {
             }
             read { Outgoing.NavigatorSearch(category = readStringUTF8(), searchTerm = readStringUTF8()) }
         }
-        register<Outgoing.GetWardrobe>() {
-            read { Outgoing.GetWardrobe }
-        }
-        register<Outgoing.GetNFTWardrobe>(name = "GetUserNftWardrobe") {
-            read { Outgoing.GetNFTWardrobe }
-        }
+        register<Outgoing.GetWardrobe>()
+        register<Outgoing.GetNFTWardrobe>(name = "GetUserNftWardrobe")
         register<Outgoing.GetHotLooks>() {
             write { it.appendByte(arg1) }
             read { Outgoing.GetHotLooks(arg1 = readByte()) }
@@ -155,6 +146,12 @@ fun registerFlash(codec: HabboCodec) {
                 )
             }
         }
+        register<Outgoing.OpenTrading> {
+            write { it.appendInt(localUserId) }
+            read { Outgoing.OpenTrading(readInteger()) }
+        }
+        register<Outgoing.AcceptTrading>()
+        register<Outgoing.ConfirmAcceptTrading>()
     }
     codec.incoming(HClient.FLASH).apply {
         register<Incoming.Chat> {
@@ -397,11 +394,19 @@ fun registerFlash(codec: HabboCodec) {
             }
             write { TODO("Not implemented, missing encoder for FurniList") }
         }
+        register<Incoming.FurniListRemove> {
+            read {
+                Incoming.FurniListRemove(furniUniqueId = readInteger())
+            }
+            write {
+                it.appendInt(furniUniqueId)
+            }
+        }
         register<Incoming.FurniListAddOrUpdate> {
             read {
                 Incoming.FurniListAddOrUpdate(
                     furniUniqueId = readInteger(),
-                    furniProductType = HProductType.fromString(readString()),
+                    furniProductType = ProductType.fromString(readString())!!,
                     furniUniqueIdUnsigned = readInteger(),
                     furniTypeId = readInteger(),
                     arg5 = readInteger(),
@@ -488,6 +493,48 @@ fun registerFlash(codec: HabboCodec) {
                 )
             }
             write { it.append(look) }
+        }
+        register<Incoming.TradingOpen> {
+            read {
+                Incoming.TradingOpen(
+                    myUserId = readInteger(),
+                    arg2 = readInteger(),
+                    otherUserId = readInteger(),
+                    arg4 = readInteger()
+                )
+            }
+            write {
+                it.appendInt(myUserId)
+                it.appendInt(arg2)
+                it.appendInt(otherUserId)
+                it.appendInt(arg4)
+            }
+        }
+        register<Incoming.TradingAccept> {
+            read {
+                Incoming.TradingAccept(
+                    userId = readInteger(),
+                    userAction = readInteger()
+                )
+            }
+            write {
+                it.appendInt(userId)
+                it.appendInt(userAction)
+            }
+        }
+        register<Incoming.TradingConfirmation>()
+        register<Incoming.TradingCompleted>()
+        register<Incoming.TradingClose> {
+            read {
+                Incoming.TradingClose(
+                    userId = readInteger(),
+                    reason = readInteger()
+                )
+            }
+            write {
+                it.appendInt(userId)
+                it.appendInt(reason)
+            }
         }
     }
 }

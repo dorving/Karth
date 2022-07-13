@@ -155,7 +155,7 @@ private fun registerOutgoing(codec: HabboCodec) {
             headerId = 3056
             write {
                 it.appendLong(offerId.toLong())
-                it.appendInt(arg2!!)
+                it.appendInt(offerPrice!!)
                 it.appendString(arg3!!) // price
             }
         }

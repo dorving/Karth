@@ -2,6 +2,7 @@ package karth.core.protocol
 
 import com.github.michaelbull.logging.InlineLogger
 import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 private typealias PacketStructuresByClass = MutableMap<KClass<out Packet>, PacketStructure<*>>
 private typealias PacketStructuresByName = MutableMap<String, PacketStructure<*>>
@@ -44,7 +45,15 @@ class NamePacketStructureMap(
 
     inline fun <reified T : ClientPacket> register(
         name: String = T::class.simpleName?:throw Exception("Could not infer name from ${T::class}, try to specify explicitly"),
-        init: PacketBuilder<T>.() -> Unit
+        init: PacketBuilder<T>.() -> Unit = {
+            read {
+                T::class.objectInstance
+                    ?:T::class.createInstance()
+            }
+            write {
+                // empty packet
+            }
+        }
     ) {
         val builder = PacketBuilder<T>(name).apply(init)
         val structure = builder.build()
