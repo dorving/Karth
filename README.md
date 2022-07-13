@@ -8,27 +8,21 @@ There are `Message.Outgoing` (to server) and `Message.Incoming` (to client) type
 These are [sealed classes](https://kotlinlang.org/docs/sealed-classes.html) 
 and define the specific `Message`implementations.
 
-Below follows an example of Karth's [Message](src/main/kotlin/dorving/karth/message/Message.kt) implementation:
-```kt
-sealed class Message(val name: String, val direction: HMessage.Direction) {
-    
-    sealed class Incoming(name: String) : Message(name, HMessage.Direction.TOCLIENT) {
-
-        @Decoder(MessageDecoder.IncomingChatDecoder::class)
-        data class Chat(val userIndex: Int, val message: String) : Incoming("Chat")
-    }
-   
-    sealed class Outgoing(name: String) : Message(name, HMessage.Direction.TOSERVER) {
-
-        @Encoder(MessageEncoder.OutgoingChatEncoder::class)
-        data class Chat(val message: String, val colorIndex: Int, val userIndex: Int) : Outgoing("Chat")
-    }
-}
-```
+Below follows an example of Karth's [Message](core/src/main/kotlin/dorving/karth/message/ServerPacket.kt) implementation:
 
 ## Usage
 
-To use Karth, create a new [KarthSession](src/main/kotlin/dorving/karth/KarthSession.kt).
+### Using Karth Extension framework
+If you want to use the Karth Plugin (Extension) framework. Make sure to add the following dependency:
+```kts
+// TODO: add dependency
+```
+
+See the [plugins.examples](plugins/examples) module for some sample plugins.
+
+### Using other Extension framework
+If you want to use Karth in a different Extension framework, 
+create a new [KarthSession](core/src/main/kotlin/karth/core/KarthSession.kt).
 
 ```kt
 val session = KarthSession(extension)
@@ -97,12 +91,13 @@ session.sendAndReceive<Outgoing.Chat, Incoming.Chat>(
 These are entities with observable states whose state reflect the current state in the client. 
 Live Entities maintain their state by listening to relevant incoming messages.
 
-Create a [LiveRoom](src/main/kotlin/dorving/karth/entity/LiveRoom.kt) instance.
+Create a [LiveRoom](plugins/api/src/main/kotlin/karth/plugin/entity/LiveRoom.kt) instance.
 ```kt
 val liveRoom = LiveRoom(session)
 ```
 
-For example, a [LiveRoom](src/main/kotlin/dorving/karth/entity/LiveRoom.kt) entitiy listens to all Room related packets in order to maintain its state. It uses these packets for one to maintaina a list of all the items in the room. 
+For example, a [LiveRoom](plugins/api/src/main/kotlin/karth/plugin/entity/LiveRoom.kt) entity listens to all Room related packets in order to maintain its state. 
+It uses these packets for one to maintain a list of all the furniture in the room. 
 ```kt
 val fxFloorItemNodes = FXCollections.observableArrayList<Label>() // e.g. used as backing list for some ListView
 liveRoom.floorItemList.addListener(ListChangeListener {

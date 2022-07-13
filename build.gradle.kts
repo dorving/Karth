@@ -1,50 +1,62 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jmailen.gradle.kotlinter.KotlinterExtension
+import org.jmailen.gradle.kotlinter.KotlinterPlugin
+
+val libsAlias = libs
+val projectsAlias = projects
+
 plugins {
-    java
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
-    id("org.openjfx.javafxplugin") version "0.0.11"
+    kotlin("jvm")
+    id("org.jmailen.kotlinter") apply false
+    id("org.openjfx.javafxplugin") apply false
 }
 
-group = "karth"
-version = "0.1"
+allprojects {
+    group = "karth"
+    version = "0.0.1"
 
-repositories {
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/dev")
-    maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/public")
-}
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+    }
 
-dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(files("lib/G-Earth.jar"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.6.2")
-    implementation("no.tornado:tornadofx:1.7.20")
+    repositories {
+        mavenCentral()
+        maven("https://dl.bintray.com/michaelbull/maven")
+        maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/dev")
+        maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/public")
+    }
 
-    testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.12.4")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
-}
+    dependencies {
+        implementation(kotlin("stdlib"))
+        implementation(libsAlias.slf4j)
+        implementation(libsAlias.inlineLogger)
+    }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_17
-}
+    tasks.withType<JavaCompile> {
+        options.release.set(17)
+    }
 
-javafx {
-    version = "17.0.2"
-    modules(
-        "javafx.base",
-        "javafx.controls",
-        "javafx.fxml",
-        "javafx.graphics",
-        "javafx.media",
-        "javafx.swing",
-        "javafx.web"
-    )
-}
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+            freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
+        }
+    }
 
-tasks.test {
-    useJUnitPlatform()
+    plugins.withType<KotlinterPlugin> {
+        configure<KotlinterExtension> {
+            disabledRules = arrayOf(
+                "filename",
+                /* https://github.com/pinterest/ktlint/issues/764 */
+                "parameter-list-wrapping",
+                /* https://github.com/pinterest/ktlint/issues/527 */
+                "import-ordering"
+            )
+        }
+    }
+
+    plugins.withType<KotlinPluginWrapper> {
+        apply(plugin = "org.jmailen.kotlinter")
+    }
 }
