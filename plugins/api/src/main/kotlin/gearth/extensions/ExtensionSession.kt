@@ -28,7 +28,7 @@ class ExtensionSession(private val args: Array<String>, val plugin: Plugin<*>)  
         when (message) {
             is ExtensionMessage.Incoming.InfoRequest -> {
                 val pluginInfo = plugin.getInfo()
-                plugin.send(
+                send(
                     Outgoing.ExtensionInfo(
                         title = pluginInfo.title,
                         author = pluginInfo.author,
@@ -70,7 +70,7 @@ class ExtensionSession(private val args: Array<String>, val plugin: Plugin<*>)  
                 val interceptedMessage = HMessage(message.packetString)
                 extension.modifyMessage(interceptedMessage)
                 val response = Outgoing.ManipulatedPacket(interceptedMessage)
-                plugin.send(response)
+                send(response)
             }
             is ExtensionMessage.Incoming.UpdateHostInfo -> {
                 // TODO: updateHostInfo
@@ -82,7 +82,11 @@ class ExtensionSession(private val args: Array<String>, val plugin: Plugin<*>)  
     private fun writeToConsole(colorClass: String, s: String, mentionTitle: Boolean) {
         val pluginInfo = plugin.getInfo()
         val text = "[" + colorClass + "]" + (if (mentionTitle) pluginInfo.title + " --> " else "") + s
-        plugin.send(Outgoing.ExtensionConsoleLog(text), )
+        send(Outgoing.ExtensionConsoleLog(text), )
+    }
+
+    private fun send(outgoing: Outgoing) {
+        plugin.channel.writeAndFlush(outgoing)
     }
 
     companion object {

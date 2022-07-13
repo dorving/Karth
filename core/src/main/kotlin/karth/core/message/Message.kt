@@ -1,6 +1,5 @@
 package karth.core.message
 
-import gearth.extensions.parsers.HProductType
 import gearth.protocol.HMessage
 import gearth.services.packet_info.PacketInfo
 import karth.core.api.*
@@ -141,9 +140,12 @@ sealed class Message {
         data class FurniList(val inventoryItems: List<InventoryItem>) : Incoming()
 
         @kotlinx.serialization.Serializable
+        data class FurniListRemove(val furniUniqueId: Int) : Incoming()
+
+        @kotlinx.serialization.Serializable
         data class FurniListAddOrUpdate(
             val furniUniqueId: Int,
-            val furniProductType: HProductType,
+            val furniProductType: ProductType,
             val furniUniqueIdUnsigned: Int,
             val furniTypeId: Int,
             val arg5: Int,
@@ -179,6 +181,22 @@ sealed class Message {
 
         @kotlinx.serialization.Serializable
         data class FigureUpdate(val look: Look) : Incoming()
+
+        @kotlinx.serialization.Serializable
+        data class TradingOpen(val myUserId: Int, val arg2: Int, val otherUserId: Int, val arg4: Int) : Incoming()
+
+        @kotlinx.serialization.Serializable
+        data class TradingAccept(val userId: Int, val userAction: Int) : Incoming() {
+            fun userAccepts() = userAction > 0
+        }
+        @kotlinx.serialization.Serializable
+        object TradingConfirmation : Incoming()
+
+        @kotlinx.serialization.Serializable
+        object TradingCompleted : Incoming()
+
+        @kotlinx.serialization.Serializable
+        data class TradingClose(val userId: Int, val reason: Int) : Incoming()
     }
 
     sealed class Outgoing : Message(), ServerPacket {
@@ -287,5 +305,14 @@ sealed class Message {
 
         @kotlinx.serialization.Serializable
         data class UpdateFigureData(val look: Look) : Outgoing()
+
+        @kotlinx.serialization.Serializable
+        data class OpenTrading(val localUserId: Int) : Outgoing()
+
+        @kotlinx.serialization.Serializable
+        object AcceptTrading : Outgoing()
+
+        @kotlinx.serialization.Serializable
+        object ConfirmAcceptTrading : Outgoing()
     }
 }

@@ -26,24 +26,24 @@ class PluginApplication : Application() {
     override fun start(primaryStage: Stage) {
         val plugin = creator.createForm(primaryStage) as Plugin<*>
         val wrapper = object : Extension(args) {
-            override fun initExtension() = plugin.`access$initExtension`()
+            override fun initExtension() = plugin.initExtension()
             override fun onClick() = plugin.onClick()
-            override fun onStartConnection() = plugin.`access$onStartConnection`()
-            override fun onEndConnection() = plugin.`access$onEndConnection`()
+            override fun onStartConnection() = plugin.onStartConnection()
+            override fun onEndConnection() = plugin.onEndConnection()
             override fun getInfoAnnotations() = ExtensionInfo(
                 Title = info.title,
                 Description = info.description,
                 Version = info.version,
                 Author = info.author
             )
-            override fun canLeave(): Boolean = plugin.`access$canLeave`()
-            override fun canDelete(): Boolean = plugin.`access$canDelete`()
+            override fun canLeave(): Boolean = plugin.canLeave()
+            override fun canDelete(): Boolean = plugin.canDelete()
         }
         val hostServicesField = ExtensionForm::class.java.getDeclaredField("hostServices")
         hostServicesField.set(plugin, hostServices)
         val extensionField = ExtensionForm::class.java.getDeclaredField("extension")
         extensionField.set(plugin, wrapper)
-        plugin.`access$primaryStage` = primaryStage
+        plugin.primaryStage = primaryStage
         val fieldsInitializedField = ExtensionForm::class.java.getDeclaredField("fieldsInitialized")
         val fieldsInitialized = fieldsInitializedField.get(plugin) as Observable<*>
         fieldsInitialized.fireEvent()
@@ -59,7 +59,7 @@ class PluginApplication : Application() {
             it.consume()
             Platform.runLater {
                 primaryStage.hide()
-                plugin.`access$onHide`()
+                plugin.onHide()
             }
         }
     }
