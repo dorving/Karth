@@ -23,6 +23,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://jitpack.io")
         maven("https://dl.bintray.com/michaelbull/maven")
         maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/dev")
         maven("https://maven.pkg.jetbrains.space/data2viz/p/maven/public")
@@ -71,12 +72,6 @@ subprojects {
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
-            }
-            repositories {
-                maven {
-                    name = "myRepo"
-                    url = uri(layout.buildDirectory.dir("repo"))
-                }
             }
         }
     }

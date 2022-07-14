@@ -1,16 +1,11 @@
 val projectsAlias = projects
 val libsAlias = libs
 
-val rootPluginDir = projectDir
-val rootPluginBuildDir = buildDir
-
 plugins {
     id("org.openjfx.javafxplugin")
 }
 
 subprojects {
-    val relative = projectDir.relativeTo(rootPluginDir)
-    buildDir = rootPluginBuildDir.resolve(relative)
     group = "karth.plugins"
     apply(plugin = "org.openjfx.javafxplugin")
     dependencies {

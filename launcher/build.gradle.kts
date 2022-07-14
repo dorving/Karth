@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(project(":core"))
-    implementation(files("libs/G-Wasm-Minimal-1.0.3.jar"))
+    implementation("com.github.dorving:G-Wasm:minimal-SNAPSHOT")
     implementation("at.favre.lib:bytes:1.5.0")
     implementation("com.github.tulskiy:jkeymaster:1.3")
     implementation("com.github.ganskef:littleproxy-mitm:1.1.0")

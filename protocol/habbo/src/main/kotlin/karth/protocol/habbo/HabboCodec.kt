@@ -1,3 +1,5 @@
+@file:Suppress("RemoveExplicitTypeArguments")
+
 package karth.protocol.habbo
 
 import karth.core.protocol.PacketStructureCodecFactory
@@ -9,3 +11,4 @@ object HabboCodec : PacketStructureCodecFactory() {
         registerUnity(this)
     }
 }
+

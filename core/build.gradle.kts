@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    api(files("libs/G-Earth.jar"))
+    api("com.github.dorving:G-Earth:master-SNAPSHOT")
     implementation(libsAlias.kotlinCoroutinesCore)
     implementation(libsAlias.kotlinSerialisationJson)
     implementation(libsAlias.kotlinReflect)
