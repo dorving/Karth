@@ -15,7 +15,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "karth.plugins"
-            artifactId = "api"
+            artifactId = "plugins-api"
             from(components["java"])
         }
     }

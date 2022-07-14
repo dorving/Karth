@@ -6,7 +6,7 @@ plugins {
 }
 
 subprojects {
-    group = "karth.protocol"
+    group = "karth.protocols"
     dependencies {
         implementation(projectsAlias.core)
     }
@@ -18,7 +18,7 @@ subprojects {
         publications {
             create<MavenPublication>("maven") {
                 groupId = "karth.protocols"
-                artifactId = this@subprojects.name
+                artifactId = "protocol-${this@subprojects.name}"
                 from(components["java"])
             }
         }
