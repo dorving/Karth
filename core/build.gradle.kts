@@ -1,12 +1,12 @@
 val libsAlias = libs
 
 plugins {
-    id("org.jetbrains.kotlin.plugin.serialization")
+    kotlin("plugin.serialization")
     `maven-publish`
 }
 
 dependencies {
-    api("com.github.dorving:G-Earth:master-SNAPSHOT")
+    api(libsAlias.gearth)
     implementation(libsAlias.kotlinCoroutinesCore)
     implementation(libsAlias.kotlinSerialisationJson)
     implementation(libsAlias.kotlinReflect)

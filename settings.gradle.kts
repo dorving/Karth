@@ -10,14 +10,14 @@ include("database")
 include("launcher")
 include("plugins")
 includeChildren("plugins")
-include("protocol")
-includeChildren("protocol")
+include("protocols")
+includeChildren("protocols")
+
 
 pluginManagement {
     plugins {
         kotlin("jvm") version "1.7.10"
         kotlin("plugin.serialization") version "1.7.10"
-        id("org.jmailen.kotlinter") version "3.3.0"
         id("org.openjfx.javafxplugin") version "0.0.11"
     }
 }

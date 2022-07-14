@@ -10,6 +10,8 @@ kotlin-guice = "1.6.0"
 kotlinter = "3.3.0"
 log4j = "2.14.0"
 tornado-fx = "1.7.20"
+netty = "4.1.77.Final"
+g-earth = "master-SNAPSHOT"
 
 [libraries]
 classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
@@ -22,4 +24,6 @@ kotlinScriptRuntime = { module = "org.jetbrains.kotlin:kotlin-script-runtime", v
 kotlinCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlinSerialisationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 slf4j = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j" }
-tornadoFX = { module = "no.tornado:tornadofx", version.ref = "tornado-fx"}
+tornadoFX = { module = "no.tornado:tornadofx", version.ref = "tornado-fx" }
+netty = { module = "io.netty:netty-all", version.ref = "netty" }
+gearth = { module = "com.github.dorving:G-Earth", version.ref = "g-earth" }

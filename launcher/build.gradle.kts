@@ -1,29 +1,13 @@
+val projectsAlias = projects
+
 plugins {
     id("org.beryx.runtime") version "1.12.5"
     id("org.openjfx.javafxplugin")
 }
 
 dependencies {
-    api(project(":core"))
-    implementation("com.github.dorving:G-Wasm:minimal-SNAPSHOT")
-    implementation("at.favre.lib:bytes:1.5.0")
-    implementation("com.github.tulskiy:jkeymaster:1.3")
-    implementation("com.github.ganskef:littleproxy-mitm:1.1.0")
-    implementation("commons-io:commons-io:2.10.0")
-    implementation("javax.websocket:javax.websocket-api:1.1")
-    implementation("org.apache.maven:maven-artifact:3.6.3")
-    implementation("org.eclipse.jetty:jetty-server:9.4.43.v20210629")
-    implementation("org.eclipse.jetty.websocket:javax-websocket-server-impl:9.4.43.v20210629")   {
-        exclude("javax.websocket", "javax.websocket-client-api")
-    }
-    implementation("org.eclipse.jetty:jetty-http:9.4.43.v20210629")
-    implementation("org.fxmisc.richtext:richtextfx:0.10.5")
-    implementation("org.json:json:20190722")
-    implementation("org.jsoup:jsoup:1.14.2")
-    implementation("org.slf4j:slf4j-jdk14:2.0.0-alpha0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    api(projectsAlias.core)
 }
-
 
 application {
     mainClass.set("karth.launcher.KarthLauncher")

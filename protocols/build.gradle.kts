@@ -13,11 +13,12 @@ subprojects {
     apply {
         plugin("org.gradle.maven-publish")
     }
+
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = "karth.protocol"
-                artifactId = name
+                groupId = "karth.protocols"
+                artifactId = this@subprojects.name
                 from(components["java"])
             }
         }

@@ -6,9 +6,9 @@ plugins {
 }
 
 dependencies {
-    implementation(projectsAlias.core)
-    implementation(libs.tornadoFX)
-    implementation("io.netty:netty-all:4.1.24.Final")
+    api(projectsAlias.core)
+    implementation(libsAlias.tornadoFX)
+    implementation(libsAlias.netty)
 }
 
 publishing {

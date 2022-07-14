@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projectsAlias.protocol.habbo)
+    implementation(projectsAlias.protocols.habbo)
     implementation(libsAlias.tornadoFX)
     implementation(libsAlias.kotlinSerialisationJson)
 }
