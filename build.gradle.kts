@@ -10,7 +10,6 @@ plugins {
     kotlin("jvm")
     id("org.jmailen.kotlinter") apply false
     id("org.openjfx.javafxplugin") apply false
-    `maven-publish`
 }
 
 allprojects {
@@ -60,19 +59,5 @@ allprojects {
 
     plugins.withType<KotlinPluginWrapper> {
         apply(plugin = "org.jmailen.kotlinter")
-    }
-}
-
-subprojects {
-    apply {
-        plugin("org.gradle.maven-publish")
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["java"])
-            }
-        }
     }
 }
