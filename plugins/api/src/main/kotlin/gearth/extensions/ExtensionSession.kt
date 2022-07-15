@@ -1,5 +1,6 @@
 package gearth.extensions
 
+import com.github.michaelbull.logging.InlineLogger
 import gearth.protocol.HMessage
 import gearth.protocol.connection.HClient
 import gearth.services.Constants
@@ -18,13 +19,15 @@ class ExtensionSession(private val args: Array<String>, val plugin: Plugin<*>)  
         extensionField.get(plugin) as Extension
     }
 
+    private val logger by lazy { InlineLogger(this::class) }
+
     @Volatile
     private var delayInit = false
 
     val port = getArgument(args, *PORT_FLAG)!!.toInt()
 
     fun handleIncomingMessage(message: ClientPacket) {
-        println(message)
+        logger.info { message }
         when (message) {
             is ExtensionMessage.Incoming.InfoRequest -> {
                 val pluginInfo = plugin.getInfo()
@@ -68,9 +71,17 @@ class ExtensionSession(private val args: Array<String>, val plugin: Plugin<*>)  
             }
             is ExtensionMessage.Incoming.PacketIntercept -> {
                 val interceptedMessage = HMessage(message.packetString)
-                extension.modifyMessage(interceptedMessage)
-                val response = Outgoing.ManipulatedPacket(interceptedMessage)
-                send(response)
+                plugin.useQueue = true
+                try {
+                    extension.modifyMessage(interceptedMessage)
+                    send(Outgoing.ManipulatedPacket(interceptedMessage))
+                    plugin.writeAndFLushPendingMessages()
+                } catch (e: Exception) {
+                    logger.error(e) { "Failed to write manipulated packet, clearing any pending outgoing messages" }
+                    plugin.clearPendingMessages()
+                } finally {
+                    plugin.useQueue = false
+                }
             }
             is ExtensionMessage.Incoming.UpdateHostInfo -> {
                 // TODO: updateHostInfo

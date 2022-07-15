@@ -9,10 +9,7 @@ import gearth.protocol.HPacket
 import gearth.protocol.connection.HClient
 import karth.core.message.Message
 import karth.core.message.MessageListener
-import karth.core.protocol.ClientPacket
-import karth.core.protocol.PacketStructureCodec
-import karth.core.protocol.PacketStructureCodecFactory
-import karth.core.protocol.ServerPacket
+import karth.core.protocol.*
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -111,23 +108,33 @@ class KarthSession(val extension: IExtension, private val factory: PacketStructu
         return@addListener MessageListener.Response.CONTINUE
     }
 
-
-    fun <O : ServerPacket> send(outMessage: O) {
-        logger.info { "Sending $outMessage" }
-        val packet = outMessage.encode() ?: return
-        if (!extension.sendToServer(packet))
+    fun <O : Packet> send(message: O) {
+        logger.info { "Sending $message" }
+        val packet = message.encode() ?: return
+        val send = when (message) {
+            is ClientPacket -> extension.sendToClient(packet)
+            is ServerPacket ->extension.sendToServer(packet)
+            else -> error("Invalid packet type (=$this)")
+        }
+        if (!send)
             logger.error { "Failed to send packet (packet=$packet)" }
     }
 
-     fun < O : ServerPacket> O.encode(): HPacket? {
-        val structure = codec.server[this]
+     fun <O : Packet> O.encode(): HPacket? {
+
+        val (destination, structure) = when (this) {
+            is ClientPacket -> TOCLIENT to codec.client.structures.values.find { it.clazz.isInstance(this) }as? PacketStructure<O>
+            is ServerPacket -> TOSERVER to codec.server.structures[this::class] as? PacketStructure<O>
+            else -> error("Invalid packet type (=$this)")
+        }
+
         if (structure == null) {
             logger.error { "Structure for packet not defined (packet=${this::class})" }
             return null
         }
         val packetInfo = extension.packetInfoManager.let {
-            it.getPacketInfoFromHeaderId(TOSERVER, structure.headerId)
-                ?: it.getPacketInfoFromName(TOSERVER, structure.name)
+            it.getPacketInfoFromHeaderId(destination, structure.headerId)
+                ?: it.getPacketInfoFromName(destination, structure.name)
         }
         if (packetInfo == null) {
             logger.error { "PacketInfo for structure not define (packet=$structure)" }

@@ -1,12 +1,10 @@
 
 import gearth.extensions.launch
+import karth.core.message.Message.Incoming
+import karth.core.protocol.PacketStructureCodecFactory
 import karth.plugin.Plugin
 import karth.plugin.PluginInfo
-import karth.core.message.Message.Incoming
-import karth.core.message.Message.Outgoing
-import karth.core.protocol.PacketStructureCodecFactory
 import karth.protocol.habbo.HabboCodec
-import kotlin.time.Duration.Companion.milliseconds
 
 @PluginInfo(
     title = "Ping Pong",
@@ -21,7 +19,7 @@ class PingPongPlugin : Plugin<Controller>() {
     override val codecs: PacketStructureCodecFactory = HabboCodec
     override fun onStartConnection() {
         onEach<Incoming.Chat>(condition = { contents == "ping"}) {
-            sendWithDelay(Outgoing.Chat("pong"), delayBy = 600.milliseconds)
+            send(Incoming.Chat(userIndex,"pong", arg3, bubble, arg5, count+1))
         }
     }
 }

@@ -16,7 +16,7 @@ class ClassPacketStructureMap(
         init: PacketBuilder<T>.() -> Unit = {}
     ) {
         val builder = PacketBuilder<T>(name).apply(init)
-        val structure = builder.build()
+        val structure = builder.build(T::class)
         if (structures.containsKey(T::class)) {
             error("Server packet type already has a structure (packet=${T::class.simpleName}).")
         }
@@ -56,7 +56,7 @@ class NamePacketStructureMap(
         }
     ) {
         val builder = PacketBuilder<T>(name).apply(init)
-        val structure = builder.build()
+        val structure = builder.build(T::class)
 
         if (structures.containsKey(structure.name))
             error("Client packet opcode already has a structure (opcode=${structure.name}).")

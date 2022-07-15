@@ -28,7 +28,7 @@ sealed class Message {
             abstract val contents: String
             abstract val arg3: Int
             abstract val bubble: Int
-            abstract val arg5: String
+            abstract val arg5: Int
             abstract val count: Int
         }
 
@@ -38,7 +38,7 @@ sealed class Message {
             override val contents: String,
             override val arg3: Int,
             override val bubble: Int,
-            override val arg5: String,
+            override val arg5: Int,
             override val count: Int
         ) : Speech()
 
@@ -48,7 +48,7 @@ sealed class Message {
             override val contents: String,
             override val arg3: Int,
             override val bubble: Int,
-            override val arg5: String,
+            override val arg5: Int,
             override val count: Int
         ) : Speech()
 
@@ -58,7 +58,7 @@ sealed class Message {
             override val contents: String,
             override val arg3: Int,
             override val bubble: Int,
-            override val arg5: String,
+            override val arg5: Int,
             override val count: Int
         ) : Speech()
 

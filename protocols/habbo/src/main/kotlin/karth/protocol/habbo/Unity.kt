@@ -19,7 +19,7 @@ private fun registerIncoming(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }
@@ -31,7 +31,7 @@ private fun registerIncoming(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }
@@ -43,7 +43,7 @@ private fun registerIncoming(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }

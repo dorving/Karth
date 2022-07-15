@@ -161,7 +161,7 @@ fun registerFlash(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }
@@ -170,7 +170,7 @@ fun registerFlash(codec: HabboCodec) {
                 it.appendString(contents)
                 it.appendInt(arg3)
                 it.appendInt(bubble)
-                it.appendString(arg5)
+                it.appendInt(arg5)
                 it.appendInt(count)
             }
         }
@@ -181,7 +181,7 @@ fun registerFlash(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }
@@ -190,7 +190,7 @@ fun registerFlash(codec: HabboCodec) {
                 it.appendString(contents)
                 it.appendInt(arg3)
                 it.appendInt(bubble)
-                it.appendString(arg5)
+                it.appendInt(arg5)
                 it.appendInt(count)
             }
         }
@@ -201,7 +201,7 @@ fun registerFlash(codec: HabboCodec) {
                     contents = readString(),
                     arg3 = readInteger(),
                     bubble = readInteger(),
-                    arg5 = readString(),
+                    arg5 = readInteger(),
                     count = readInteger()
                 )
             }
@@ -210,7 +210,7 @@ fun registerFlash(codec: HabboCodec) {
                 it.appendString(contents)
                 it.appendInt(arg3)
                 it.appendInt(bubble)
-                it.appendString(arg5)
+                it.appendInt(arg5)
                 it.appendInt(count)
             }
         }

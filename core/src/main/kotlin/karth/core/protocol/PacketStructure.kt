@@ -3,6 +3,7 @@ package karth.core.protocol
 import com.github.michaelbull.logging.InlineLogger
 import gearth.protocol.HPacket
 import gearth.services.packet_info.PacketInfo
+import kotlin.reflect.KClass
 
 private typealias PacketWriter<T> = T.(HPacket) -> Unit
 private typealias PacketReader<T> = HPacket.(PacketInfo?) -> T
@@ -21,6 +22,7 @@ class PacketStructure<T : Packet>(
     val name: String,
     val write: PacketWriter<T>,
     val read: PacketReader<T>?,
+    val clazz: KClass<T>
 )
 
 @DslMarker
@@ -46,7 +48,7 @@ class PacketBuilder<T : Packet>(private val name: String) {
         this.packetReader = reader
     }
 
-    fun build(): PacketStructure<T> {
+    fun build(clazz: KClass<T>): PacketStructure<T> {
         if (!::packetWriter.isInitialized)
             packetWriter = { }
         if (packetReader == null)
@@ -55,7 +57,8 @@ class PacketBuilder<T : Packet>(private val name: String) {
             headerId = headerId,
             name = name,
             write = packetWriter,
-            read = packetReader
+            read = packetReader,
+            clazz
         )
     }
 }

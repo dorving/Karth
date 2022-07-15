@@ -5,10 +5,8 @@ annotation class PluginInfo(
     val author: String,
     val description: String = "",
     val version: String = "1.0",
-    val fxmlFile: String,
-    val iconFile: String,
+    val fxmlFile: String = "",
+    val iconFile: String = "",
     val resizeable: Boolean = false,
     val alwaysOnTop: Boolean = false,
-) {
-
-}
+)
