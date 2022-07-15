@@ -363,7 +363,7 @@ fun HPacket.readNavigatorSearchResult() =
                         Triple(readInteger(), readString(), readString())
                     else
                         Triple(-1, null, null)
-                    val (roomAdName, roomAdDescription, roomAdExpiresInMin) = if (multiUse and 2 > 0)
+                    val (roomAdName, roomAdDescription, roomAdExpiresInMin) = if (multiUse and 4 > 0)
                         Triple(readString(), readString(), readInteger())
                     else
                         Triple(null, null, -1)
